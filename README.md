@@ -16,53 +16,6 @@ We first clone and install the required packages to make sure of reproducibility
 We import the necessary packges that we will use throught this notebook
 
 
-```python
-import pandas as pd
-import numpy as np
-import json
-import pickle
-import os
-import re
-import glob
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.model_selection import train_test_split, RandomizedSearchCV, GridSearchCV
-from sklearn.preprocessing import LabelEncoder
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from xgboost import XGBClassifier
-import mlflow
-import mlflow.sklearn
-from scipy.stats import loguniform
-from scipy import stats
-import time
-import tracemalloc
-import psutil
-import mediapipe as mp
-from mediapipe.tasks import python
-from mediapipe.tasks.python import vision
-from mediapipe.framework.formats import landmark_pb2
-import cv2
-from collections import deque
-#If we want to connect our notebook to colab
-#from google.colab import drive
-#drive.mount('/content/drive')
-```
-
-
-```python
-%cd Machine-Learning-Hand-Gestures-Project
-```
-
-
-```python
-num_points = 21
-seed = 42
-```
-
 # Data Loading
 
 We load the data from github using wget into colab then into our notebook 
@@ -307,82 +260,6 @@ df.isna().sum()
 
 
 
-```python
-df.info()
-```
-
-    <class 'pandas.core.frame.DataFrame'>
-    RangeIndex: 25675 entries, 0 to 25674
-    Data columns (total 64 columns):
-     #   Column  Non-Null Count  Dtype  
-    ---  ------  --------------  -----  
-     0   x1      25675 non-null  float64
-     1   y1      25675 non-null  float64
-     2   z1      25675 non-null  float64
-     3   x2      25675 non-null  float64
-     4   y2      25675 non-null  float64
-     5   z2      25675 non-null  float64
-     6   x3      25675 non-null  float64
-     7   y3      25675 non-null  float64
-     8   z3      25675 non-null  float64
-     9   x4      25675 non-null  float64
-     10  y4      25675 non-null  float64
-     11  z4      25675 non-null  float64
-     12  x5      25675 non-null  float64
-     13  y5      25675 non-null  float64
-     14  z5      25675 non-null  float64
-     15  x6      25675 non-null  float64
-     16  y6      25675 non-null  float64
-     17  z6      25675 non-null  float64
-     18  x7      25675 non-null  float64
-     19  y7      25675 non-null  float64
-     20  z7      25675 non-null  float64
-     21  x8      25675 non-null  float64
-     22  y8      25675 non-null  float64
-     23  z8      25675 non-null  float64
-     24  x9      25675 non-null  float64
-     25  y9      25675 non-null  float64
-     26  z9      25675 non-null  float64
-     27  x10     25675 non-null  float64
-     28  y10     25675 non-null  float64
-     29  z10     25675 non-null  float64
-     30  x11     25675 non-null  float64
-     31  y11     25675 non-null  float64
-     32  z11     25675 non-null  float64
-     33  x12     25675 non-null  float64
-     34  y12     25675 non-null  float64
-     35  z12     25675 non-null  float64
-     36  x13     25675 non-null  float64
-     37  y13     25675 non-null  float64
-     38  z13     25675 non-null  float64
-     39  x14     25675 non-null  float64
-     40  y14     25675 non-null  float64
-     41  z14     25675 non-null  float64
-     42  x15     25675 non-null  float64
-     43  y15     25675 non-null  float64
-     44  z15     25675 non-null  float64
-     45  x16     25675 non-null  float64
-     46  y16     25675 non-null  float64
-     47  z16     25675 non-null  float64
-     48  x17     25675 non-null  float64
-     49  y17     25675 non-null  float64
-     50  z17     25675 non-null  float64
-     51  x18     25675 non-null  float64
-     52  y18     25675 non-null  float64
-     53  z18     25675 non-null  float64
-     54  x19     25675 non-null  float64
-     55  y19     25675 non-null  float64
-     56  z19     25675 non-null  float64
-     57  x20     25675 non-null  float64
-     58  y20     25675 non-null  float64
-     59  z20     25675 non-null  float64
-     60  x21     25675 non-null  float64
-     61  y21     25675 non-null  float64
-     62  z21     25675 non-null  float64
-     63  label   25675 non-null  object 
-    dtypes: float64(63), object(1)
-    memory usage: 12.5+ MB
-    
 
 We drop the z columns since it would not be any benefical to us and find the new shape 
 
